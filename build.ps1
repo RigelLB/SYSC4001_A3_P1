@@ -6,6 +6,6 @@ if (!(Test-Path "bin")) {
 }
 
 # Compile source files into executables
-g++ -g -O0 -I . -o "bin\interrupts_EP.exe" ".\interrupts_student1_student2_EP.cpp"
-g++ -g -O0 -I . -o "bin\interrupts_RR.exe" ".\interrupts_student1_student2_RR.cpp"
-g++ -g -O0 -I . -o "bin\interrupts_EP_RR.exe" ".\interrupts_student1_student2_EP_RR.cpp"
+g++ -g -O0 -I . -o "bin\interrupts_EP.exe" ".\interrupts_101297902_101305235_EP.cpp"
+g++ -g -O0 -I . -o "bin\interrupts_RR.exe" ".\interrupts_101297902_101305235_RR.cpp"
+g++ -g -O0 -I . -o "bin\interrupts_EP_RR.exe" ".\interrupts_101297902_101305235_EP_RR.cpp"
