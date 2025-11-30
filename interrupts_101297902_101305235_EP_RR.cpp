@@ -100,7 +100,7 @@ std::tuple<std::string /* add std::string for bonus mark */ > run_simulation(std
         }
         if (running_time >= QUANTUM && running.PID != -1) {
             execution_status += print_exec_status(current_time, running.PID, RUNNING, READY);
-            pause_process(running, ready_queue, job_list);
+            pause_process(running, ready_queue, job_list, current_time);
         }
         if (running.state == NOT_ASSIGNED && !ready_queue.empty()) {
             running_time = 0;

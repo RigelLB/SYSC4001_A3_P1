@@ -7,7 +7,7 @@
 
 #include<interrupts_101297902_101305235.hpp>
 
-// The original version of FCFS does not work for I/O unless arrival_time is changed everytime it returns from I/O
+// The original version of FCFS does not work for I/O unless arrival_time is changed everytime it returns from I/O and quantum preemption
 void FCFS(std::vector<PCB> &ready_queue) {
     std::sort( 
                 ready_queue.begin(),
@@ -85,7 +85,6 @@ std::tuple<std::string /* add std::string for bonus mark */ > run_simulation(std
   
         //////////////////////////SCHEDULER//////////////////////////////
         auto size = ready_queue.size();
-        FCFS(ready_queue);
          //example of FCFS is shown here
         if (running.state == RUNNING) {
             running.remaining_time--;
@@ -103,8 +102,10 @@ std::tuple<std::string /* add std::string for bonus mark */ > run_simulation(std
         }
         if (running_time >= QUANTUM && running.PID != -1) {
             execution_status += print_exec_status(current_time, running.PID, RUNNING, READY);
-            pause_process(running, ready_queue, job_list);
+            pause_process(running, ready_queue, job_list, current_time);
         }
+        // Make sure processes are in the right order
+        FCFS(ready_queue);
         if (running.state == NOT_ASSIGNED && !ready_queue.empty()) {
             running_time = 0;
             run_process(running, job_list, ready_queue, current_time);

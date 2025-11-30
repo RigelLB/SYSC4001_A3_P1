@@ -82,7 +82,6 @@ std::tuple<std::string /* add std::string for bonus mark */ > run_simulation(std
   
         //////////////////////////SCHEDULER//////////////////////////////
         auto size = ready_queue.size();
-        EP(ready_queue);
          //example of FCFS is shown here
         if (running.state == RUNNING) {
             running.remaining_time--;
@@ -97,6 +96,9 @@ std::tuple<std::string /* add std::string for bonus mark */ > run_simulation(std
             terminate_process(running, job_list);
             idle_CPU(running);
         }
+
+        
+        EP(ready_queue);
         if (running.state == NOT_ASSIGNED && !ready_queue.empty()) {
             run_process(running, job_list, ready_queue, current_time);
             execution_status += print_exec_status(current_time, running.PID, READY, RUNNING);
