@@ -329,4 +329,11 @@ void suspend_process(PCB &running, std::vector<waiting_PCB> &wait_queue, std::ve
     sync_queue(job_queue, running);
     idle_CPU(running);
 }
+
+// Ildes the CPU and puts it into the ready
+void pause_process(PCB &running, std::vector<PCB> &ready_queue, std::vector<PCB> &job_queue) {
+    ready_queue.push_back(running);
+    sync_queue(job_queue, running);
+    idle_CPU(running);
+}
 #endif
