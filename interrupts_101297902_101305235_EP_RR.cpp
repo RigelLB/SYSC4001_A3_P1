@@ -20,7 +20,7 @@ void FCFS(std::vector<PCB> &ready_queue) {
 std::tuple<std::string /* add std::string for bonus mark */ > run_simulation(std::vector<PCB> list_processes) {
 
     std::vector<PCB> ready_queue;   //The ready queue of processes
-    std::vector<PCB> wait_queue;    //The wait queue of processes
+    std::vector<waiting_PCB> wait_queue;    //The wait queue of processes
     std::vector<PCB> job_list;      //A list to keep track of all the processes. This is similar
                                     //to the "Process, Arrival time, Burst time" table that you
                                     //see in questions. You don't need to use it, I put it here
@@ -28,6 +28,8 @@ std::tuple<std::string /* add std::string for bonus mark */ > run_simulation(std
 
     unsigned int current_time = 0;
     PCB running;
+    const int QUANTUM = 100;
+    int running_time = 0;
 
     //Initialize an empty running process
     idle_CPU(running);
@@ -62,12 +64,50 @@ std::tuple<std::string /* add std::string for bonus mark */ > run_simulation(std
         }
 
         ///////////////////////MANAGE WAIT QUEUE/////////////////////////
-        //This mainly involves keeping track of how long a process must remain in the ready queue
+        for (auto iter = wait_queue.begin(); iter != wait_queue.end();) {
+            iter->io_remaining--;
 
+            if (iter->io_remaining <= 0) {
+                iter->process.arrival_time = current_time;
+                ready_queue.push_back(iter->process);
+                sync_queue(job_list, iter->process);
+                execution_status += print_exec_status(current_time, iter->process.PID, WAITING, READY);
+
+                wait_queue.erase(iter);
+            } else { // Avoid iter being invalid
+                ++iter;
+            }
+        }
         /////////////////////////////////////////////////////////////////
-
+  
         //////////////////////////SCHEDULER//////////////////////////////
-        FCFS(ready_queue); //example of FCFS is shown here
+        auto size = ready_queue.size();
+        EP(ready_queue);
+         //example of FCFS is shown here
+        if (running.state == RUNNING) {
+            running.remaining_time--;
+            running_time++;
+            if (running.io_freq > 0 && running.remaining_time < running.processing_time && running.remaining_time > 0 && running.remaining_time % running.io_freq == running.processing_time % running.io_freq) {
+                execution_status += print_exec_status(current_time, running.PID, RUNNING, WAITING);
+                suspend_process(running, wait_queue, job_list);
+            }
+
+        }
+        if (running.remaining_time == 0 && running.state != NOT_ASSIGNED) {
+            execution_status += print_exec_status(current_time, running.PID, RUNNING, TERMINATED);
+            terminate_process(running, job_list);
+            idle_CPU(running);
+        }
+        if (running_time >= QUANTUM && running.PID != -1) {
+            execution_status += print_exec_status(current_time, running.PID, RUNNING, READY);
+            pause_process(running, ready_queue, job_list);
+        }
+        if (running.state == NOT_ASSIGNED && !ready_queue.empty()) {
+            running_time = 0;
+            run_process(running, job_list, ready_queue, current_time);
+            execution_status += print_exec_status(current_time, running.PID, READY, RUNNING);
+        } 
+        current_time++;
         /////////////////////////////////////////////////////////////////
 
     }
