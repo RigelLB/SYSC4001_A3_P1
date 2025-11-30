@@ -30,7 +30,7 @@ std::tuple<std::string /* add std::string for bonus mark */ > run_simulation(std
     PCB running;
     const int QUANTUM = 100;
     int running_time = 0;
-
+    int previous_PID = -1;
     //Initialize an empty running process
     idle_CPU(running);
 
@@ -81,14 +81,11 @@ std::tuple<std::string /* add std::string for bonus mark */ > run_simulation(std
         /////////////////////////////////////////////////////////////////
   
         //////////////////////////SCHEDULER//////////////////////////////
-        auto size = ready_queue.size();
-        EP(ready_queue);
-         //example of FCFS is shown here
         if (running.state == RUNNING) {
             running.remaining_time--;
-            running_time++;
             if (running.io_freq > 0 && running.remaining_time < running.processing_time && running.remaining_time > 0 && running.remaining_time % running.io_freq == running.processing_time % running.io_freq) {
                 execution_status += print_exec_status(current_time, running.PID, RUNNING, WAITING);
+                previous_PID = running.PID;
                 suspend_process(running, wait_queue, job_list);
             }
 
@@ -97,14 +94,35 @@ std::tuple<std::string /* add std::string for bonus mark */ > run_simulation(std
             execution_status += print_exec_status(current_time, running.PID, RUNNING, TERMINATED);
             terminate_process(running, job_list);
             idle_CPU(running);
-        }
+        } 
         if (running_time >= QUANTUM && running.PID != -1) {
             execution_status += print_exec_status(current_time, running.PID, RUNNING, READY);
+            previous_PID = running.PID;
             pause_process(running, ready_queue, job_list, current_time);
         }
-        if (running.state == NOT_ASSIGNED && !ready_queue.empty()) {
-            running_time = 0;
+
+        
+        EP(ready_queue);
+        // Adding Preemption to the EP scheduling
+        if (ready_queue.back().PID > running.PID) {
+            auto temp_process = running;
+            temp_process.arrival_time = current_time;
+            sync_queue(job_list, temp_process);
+            execution_status += print_exec_status(current_time, running.PID, RUNNING, READY);
             run_process(running, job_list, ready_queue, current_time);
+            execution_status += print_exec_status(current_time, running.PID, READY, RUNNING);
+            // Making sure that the running process doesn't get popped back immediately.
+            ready_queue.push_back(temp_process);
+        }
+
+        if (running.state == NOT_ASSIGNED && !ready_queue.empty()) {
+            if (ready_queue.size() > 2 && ready_queue.back().PID == previous_PID) {
+                auto temp_process = ready_queue.back();
+                ready_queue.pop_back();
+                run_process(running, job_list, ready_queue, current_time);
+                ready_queue.push_back(temp_process); // Ensure that the process that was kicked from RR doesn't get put back immediately.
+            }
+            
             execution_status += print_exec_status(current_time, running.PID, READY, RUNNING);
         } 
         current_time++;
