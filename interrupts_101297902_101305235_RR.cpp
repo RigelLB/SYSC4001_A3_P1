@@ -7,6 +7,7 @@
 
 #include<interrupts_101297902_101305235.hpp>
 
+// The original version of FCFS does not work for I/O unless arrival_time is changed everytime it returns from I/O
 void FCFS(std::vector<PCB> &ready_queue) {
     std::sort( 
                 ready_queue.begin(),
@@ -16,6 +17,7 @@ void FCFS(std::vector<PCB> &ready_queue) {
                 } 
             );
 }
+
 
 std::tuple<std::string /* add std::string for bonus mark */ > run_simulation(std::vector<PCB> list_processes) {
 
@@ -69,8 +71,9 @@ std::tuple<std::string /* add std::string for bonus mark */ > run_simulation(std
             iter->io_remaining--;
 
             if (iter->io_remaining <= 0) {
+                iter->process.arrival_time = current_time;
                 ready_queue.push_back(iter->process);
-
+                sync_queue(job_list, iter->process);
                 execution_status += print_exec_status(current_time, iter->process.PID, WAITING, READY);
 
                 wait_queue.erase(iter);
