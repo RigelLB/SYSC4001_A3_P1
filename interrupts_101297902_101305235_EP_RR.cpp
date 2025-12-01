@@ -83,6 +83,7 @@ std::tuple<std::string /* add std::string for bonus mark */ > run_simulation(std
         //////////////////////////SCHEDULER//////////////////////////////
         if (running.state == RUNNING) {
             running.remaining_time--;
+            running_time++;
             if (running.io_freq > 0 && running.remaining_time < running.processing_time && running.remaining_time > 0 && running.remaining_time % running.io_freq == running.processing_time % running.io_freq) {
                 execution_status += print_exec_status(current_time, running.PID, RUNNING, WAITING);
                 previous_PID = running.PID;
@@ -104,9 +105,12 @@ std::tuple<std::string /* add std::string for bonus mark */ > run_simulation(std
         
         EP(ready_queue);
         // Adding Preemption to the EP scheduling
-        if (ready_queue.back().PID > running.PID) {
+        // ready_queue.back().arrival_time == current_time is to avoid a higher PID to preempt right after being booted
+        if (ready_queue.size() > 0 && ready_queue.back().PID < running.PID && running.PID > -1 && ready_queue.back().arrival_time == current_time) {
+            running_time = 0;
             auto temp_process = running;
             temp_process.arrival_time = current_time;
+            temp_process.state = READY;
             sync_queue(job_list, temp_process);
             execution_status += print_exec_status(current_time, running.PID, RUNNING, READY);
             run_process(running, job_list, ready_queue, current_time);
@@ -116,11 +120,15 @@ std::tuple<std::string /* add std::string for bonus mark */ > run_simulation(std
         }
 
         if (running.state == NOT_ASSIGNED && !ready_queue.empty()) {
-            if (ready_queue.size() > 2 && ready_queue.back().PID == previous_PID) {
+            running_time = 0;
+            if (ready_queue.size() >= 2 && ready_queue.back().PID == previous_PID) {
                 auto temp_process = ready_queue.back();
                 ready_queue.pop_back();
                 run_process(running, job_list, ready_queue, current_time);
                 ready_queue.push_back(temp_process); // Ensure that the process that was kicked from RR doesn't get put back immediately.
+                sync_queue(job_list, temp_process);
+            } else {
+                run_process(running, job_list, ready_queue, current_time);
             }
             
             execution_status += print_exec_status(current_time, running.PID, READY, RUNNING);
