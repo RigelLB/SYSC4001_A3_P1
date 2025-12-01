@@ -1,0 +1,34 @@
++------------------------------------------------+
+|Time of Transition |PID | Old State | New State |
++------------------------------------------------+
+|                 0 | 10 |       NEW |     READY |
+|                 0 | 10 |     READY |   RUNNING |
+|                15 | 12 |       NEW |     READY |
+|                20 | 10 |   RUNNING |   WAITING |
+|                20 | 12 |     READY |   RUNNING |
+|                25 | 10 |   WAITING |     READY |
+|               110 | 12 |   RUNNING |TERMINATED |
+|               110 | 10 |     READY |   RUNNING |
+|               130 | 10 |   RUNNING |   WAITING |
+|               135 | 10 |   WAITING |     READY |
+|               135 | 10 |     READY |   RUNNING |
+|               155 | 10 |   RUNNING |   WAITING |
+|               160 | 10 |   WAITING |     READY |
+|               160 | 10 |     READY |   RUNNING |
+|               180 | 10 |   RUNNING |   WAITING |
+|               185 | 10 |   WAITING |     READY |
+|               185 | 10 |     READY |   RUNNING |
+|               205 | 10 |   RUNNING |   WAITING |
+|               210 | 10 |   WAITING |     READY |
+|               210 | 10 |     READY |   RUNNING |
+|               230 | 10 |   RUNNING |   WAITING |
+|               235 | 10 |   WAITING |     READY |
+|               235 | 10 |     READY |   RUNNING |
+|               255 | 10 |   RUNNING |   WAITING |
+|               260 | 10 |   WAITING |     READY |
+|               260 | 10 |     READY |   RUNNING |
+|               280 | 10 |   RUNNING |   WAITING |
+|               285 | 10 |   WAITING |     READY |
+|               285 | 10 |     READY |   RUNNING |
+|               305 | 10 |   RUNNING |TERMINATED |
++------------------------------------------------+

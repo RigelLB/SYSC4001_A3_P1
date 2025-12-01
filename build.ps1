@@ -1,3 +1,4 @@
+# I could not get the build.sh to work on my system so I just wrote it for powershell
 # Check if "bin" directory exists
 if (!(Test-Path "bin")) {
     New-Item -ItemType Directory -Path "bin" | Out-Null

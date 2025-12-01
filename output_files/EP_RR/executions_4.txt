@@ -1,0 +1,50 @@
++------------------------------------------------+
+|Time of Transition |PID | Old State | New State |
++------------------------------------------------+
+|                 0 | 10 |       NEW |     READY |
+|                 0 | 10 |     READY |   RUNNING |
+|                15 | 12 |       NEW |     READY |
+|                20 | 10 |   RUNNING |   WAITING |
+|                20 | 12 |     READY |   RUNNING |
+|                25 | 10 |   WAITING |     READY |
+|                25 | 12 |   RUNNING |     READY |
+|                25 | 10 |     READY |   RUNNING |
+|                45 | 10 |   RUNNING |   WAITING |
+|                45 | 12 |     READY |   RUNNING |
+|                50 | 10 |   WAITING |     READY |
+|                50 | 12 |   RUNNING |     READY |
+|                50 | 10 |     READY |   RUNNING |
+|                70 | 10 |   RUNNING |   WAITING |
+|                70 | 12 |     READY |   RUNNING |
+|                75 | 10 |   WAITING |     READY |
+|                75 | 12 |   RUNNING |     READY |
+|                75 | 10 |     READY |   RUNNING |
+|                95 | 10 |   RUNNING |   WAITING |
+|                95 | 12 |     READY |   RUNNING |
+|               100 | 10 |   WAITING |     READY |
+|               100 | 12 |   RUNNING |     READY |
+|               100 | 10 |     READY |   RUNNING |
+|               120 | 10 |   RUNNING |   WAITING |
+|               120 | 12 |     READY |   RUNNING |
+|               125 | 10 |   WAITING |     READY |
+|               125 | 12 |   RUNNING |     READY |
+|               125 | 10 |     READY |   RUNNING |
+|               145 | 10 |   RUNNING |   WAITING |
+|               145 | 12 |     READY |   RUNNING |
+|               150 | 10 |   WAITING |     READY |
+|               150 | 12 |   RUNNING |     READY |
+|               150 | 10 |     READY |   RUNNING |
+|               170 | 10 |   RUNNING |   WAITING |
+|               170 | 12 |     READY |   RUNNING |
+|               175 | 10 |   WAITING |     READY |
+|               175 | 12 |   RUNNING |     READY |
+|               175 | 10 |     READY |   RUNNING |
+|               195 | 10 |   RUNNING |   WAITING |
+|               195 | 12 |     READY |   RUNNING |
+|               200 | 10 |   WAITING |     READY |
+|               200 | 12 |   RUNNING |     READY |
+|               200 | 10 |     READY |   RUNNING |
+|               220 | 10 |   RUNNING |TERMINATED |
+|               220 | 12 |     READY |   RUNNING |
+|               270 | 12 |   RUNNING |TERMINATED |
++------------------------------------------------+

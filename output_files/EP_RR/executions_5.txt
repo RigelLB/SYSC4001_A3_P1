@@ -1,0 +1,51 @@
++------------------------------------------------+
+|Time of Transition |PID | Old State | New State |
++------------------------------------------------+
+|                 0 | 10 |       NEW |     READY |
+|                 0 | 10 |     READY |   RUNNING |
+|                15 | 12 |       NEW |     READY |
+|                20 | 10 |   RUNNING |   WAITING |
+|                20 | 12 |     READY |   RUNNING |
+|                25 | 10 |   WAITING |     READY |
+|                25 | 12 |   RUNNING |     READY |
+|                25 | 10 |     READY |   RUNNING |
+|                30 |  7 |       NEW |     READY |
+|                30 | 10 |   RUNNING |     READY |
+|                30 |  7 |     READY |   RUNNING |
+|                70 |  7 |   RUNNING |   WAITING |
+|                70 | 10 |     READY |   RUNNING |
+|                80 |  7 |   WAITING |     READY |
+|                80 | 10 |   RUNNING |     READY |
+|                80 |  7 |     READY |   RUNNING |
+|               120 |  7 |   RUNNING |   WAITING |
+|               120 | 10 |     READY |   RUNNING |
+|               125 | 10 |   RUNNING |   WAITING |
+|               125 | 12 |     READY |   RUNNING |
+|               130 |  7 |   WAITING |     READY |
+|               130 | 10 |   WAITING |     READY |
+|               130 | 12 |   RUNNING |     READY |
+|               130 |  7 |     READY |   RUNNING |
+|               170 |  7 |   RUNNING |TERMINATED |
+|               170 | 12 |     READY |   RUNNING |
+|               250 | 12 |   RUNNING |TERMINATED |
+|               250 | 10 |     READY |   RUNNING |
+|               270 | 10 |   RUNNING |   WAITING |
+|               275 | 10 |   WAITING |     READY |
+|               275 | 10 |     READY |   RUNNING |
+|               295 | 10 |   RUNNING |   WAITING |
+|               300 | 10 |   WAITING |     READY |
+|               300 | 10 |     READY |   RUNNING |
+|               320 | 10 |   RUNNING |   WAITING |
+|               325 | 10 |   WAITING |     READY |
+|               325 | 10 |     READY |   RUNNING |
+|               345 | 10 |   RUNNING |   WAITING |
+|               350 | 10 |   WAITING |     READY |
+|               350 | 10 |     READY |   RUNNING |
+|               370 | 10 |   RUNNING |   WAITING |
+|               375 | 10 |   WAITING |     READY |
+|               375 | 10 |     READY |   RUNNING |
+|               395 | 10 |   RUNNING |   WAITING |
+|               400 | 10 |   WAITING |     READY |
+|               400 | 10 |     READY |   RUNNING |
+|               420 | 10 |   RUNNING |TERMINATED |
++------------------------------------------------+

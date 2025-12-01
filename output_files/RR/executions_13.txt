@@ -1,0 +1,43 @@
++------------------------------------------------+
+|Time of Transition |PID | Old State | New State |
++------------------------------------------------+
+|                 0 |  1 |       NEW |     READY |
+|                 0 |  1 |     READY |   RUNNING |
+|                20 |  1 |   RUNNING |   WAITING |
+|                25 |  1 |   WAITING |     READY |
+|                25 |  1 |     READY |   RUNNING |
+|                30 |  3 |       NEW |     READY |
+|                45 |  1 |   RUNNING |   WAITING |
+|                45 |  3 |     READY |   RUNNING |
+|                50 |  1 |   WAITING |     READY |
+|                85 |  3 |   RUNNING |   WAITING |
+|                85 |  1 |     READY |   RUNNING |
+|                95 |  3 |   WAITING |     READY |
+|               100 |  2 |       NEW |     READY |
+|               105 |  1 |   RUNNING |   WAITING |
+|               105 |  3 |     READY |   RUNNING |
+|               110 |  1 |   WAITING |     READY |
+|               145 |  3 |   RUNNING |   WAITING |
+|               145 |  2 |     READY |   RUNNING |
+|               155 |  3 |   WAITING |     READY |
+|               235 |  2 |   RUNNING |TERMINATED |
+|               235 |  1 |     READY |   RUNNING |
+|               255 |  1 |   RUNNING |   WAITING |
+|               255 |  3 |     READY |   RUNNING |
+|               260 |  1 |   WAITING |     READY |
+|               295 |  3 |   RUNNING |TERMINATED |
+|               295 |  1 |     READY |   RUNNING |
+|               315 |  1 |   RUNNING |   WAITING |
+|               320 |  1 |   WAITING |     READY |
+|               320 |  1 |     READY |   RUNNING |
+|               340 |  1 |   RUNNING |   WAITING |
+|               345 |  1 |   WAITING |     READY |
+|               345 |  1 |     READY |   RUNNING |
+|               365 |  1 |   RUNNING |   WAITING |
+|               370 |  1 |   WAITING |     READY |
+|               370 |  1 |     READY |   RUNNING |
+|               390 |  1 |   RUNNING |   WAITING |
+|               395 |  1 |   WAITING |     READY |
+|               395 |  1 |     READY |   RUNNING |
+|               415 |  1 |   RUNNING |TERMINATED |
++------------------------------------------------+
