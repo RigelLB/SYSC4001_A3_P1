@@ -28,8 +28,11 @@ std::tuple<std::string /* add std::string for bonus mark */ > run_simulation(std
 
     unsigned int current_time = 0;
     PCB running;
+    // Quantum timer used for the Round-Robin style timeout
     const int QUANTUM = 100;
+    // Keep track how long a proccess has been running
     int running_time = 0;
+    // Keep track of the previous process that ran to enforce the timeout policy
     int previous_PID = -1;
     //Initialize an empty running process
     idle_CPU(running);
@@ -65,12 +68,16 @@ std::tuple<std::string /* add std::string for bonus mark */ > run_simulation(std
 
         ///////////////////////MANAGE WAIT QUEUE/////////////////////////
         for (auto iter = wait_queue.begin(); iter != wait_queue.end();) {
+            // Decrement the amount of time remaining for the I/O operation
             iter->io_remaining--;
 
+            // If the I/O operation is complete
             if (iter->io_remaining <= 0) {
                 iter->process.arrival_time = current_time;
                 ready_queue.push_back(iter->process);
                 sync_queue(job_list, iter->process);
+
+                // Print out the transition from WAITING to RUNNING
                 execution_status += print_exec_status(current_time, iter->process.PID, WAITING, READY);
 
                 wait_queue.erase(iter);
@@ -84,6 +91,7 @@ std::tuple<std::string /* add std::string for bonus mark */ > run_simulation(std
         if (running.state == RUNNING) {
             running.remaining_time--;
             running_time++;
+            // Checks to see if the process is about to have an I/O operation, suspends it if it will
             if (running.io_freq > 0 && running.remaining_time < running.processing_time && running.remaining_time > 0 && running.remaining_time % running.io_freq == running.processing_time % running.io_freq) {
                 execution_status += print_exec_status(current_time, running.PID, RUNNING, WAITING);
                 previous_PID = running.PID;
@@ -91,18 +99,21 @@ std::tuple<std::string /* add std::string for bonus mark */ > run_simulation(std
             }
 
         }
+        // Terminate the process if there is no remaining CPU processing time
         if (running.remaining_time == 0 && running.state != NOT_ASSIGNED) {
             execution_status += print_exec_status(current_time, running.PID, RUNNING, TERMINATED);
             terminate_process(running, job_list);
             idle_CPU(running);
         } 
+
+        // Pause the process if the quantum has expired
         if (running_time >= QUANTUM && running.PID != -1) {
             execution_status += print_exec_status(current_time, running.PID, RUNNING, READY);
             previous_PID = running.PID;
             pause_process(running, ready_queue, job_list, current_time);
         }
 
-        
+        // Ensure that the ready queue is still ordered via EP
         EP(ready_queue);
         // Adding Preemption to the EP scheduling
         // ready_queue.back().arrival_time == current_time is to avoid a higher PID to preempt right after being booted
@@ -111,6 +122,8 @@ std::tuple<std::string /* add std::string for bonus mark */ > run_simulation(std
             auto temp_process = running;
             temp_process.arrival_time = current_time;
             temp_process.state = READY;
+            // The following avoid putting the current running process into the ready queue so the other process in the ready queue gets chosen
+            // even if its PID is lower.
             sync_queue(job_list, temp_process);
             execution_status += print_exec_status(current_time, running.PID, RUNNING, READY);
             run_process(running, job_list, ready_queue, current_time);
@@ -119,8 +132,10 @@ std::tuple<std::string /* add std::string for bonus mark */ > run_simulation(std
             ready_queue.push_back(temp_process);
         }
 
+        // Run a new process if no programs are assigned to the CPU
         if (running.state == NOT_ASSIGNED && !ready_queue.empty()) {
             running_time = 0;
+            // Ensures that the same process does not get chosen to be ran again (timeout policy)
             if (ready_queue.size() >= 2 && ready_queue.back().PID == previous_PID) {
                 auto temp_process = ready_queue.back();
                 ready_queue.pop_back();
@@ -133,6 +148,7 @@ std::tuple<std::string /* add std::string for bonus mark */ > run_simulation(std
             
             execution_status += print_exec_status(current_time, running.PID, READY, RUNNING);
         } 
+        // Increment the current time
         current_time++;
         /////////////////////////////////////////////////////////////////
 

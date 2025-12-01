@@ -67,7 +67,7 @@ std::tuple<std::string /* add std::string for bonus mark */ > run_simulation(std
         //This mainly involves keeping track of how long a process must remain in the ready queue
         for (auto iter = wait_queue.begin(); iter != wait_queue.end();) {
             iter->io_remaining--;
-
+            // If the I/O operation is complete
             if (iter->io_remaining <= 0) {
                 ready_queue.push_back(iter->process);
 
@@ -97,12 +97,13 @@ std::tuple<std::string /* add std::string for bonus mark */ > run_simulation(std
             idle_CPU(running);
         }
 
-        
+        // Ensure that the ready queue is still ordered via EP
         EP(ready_queue);
         if (running.state == NOT_ASSIGNED && !ready_queue.empty()) {
             run_process(running, job_list, ready_queue, current_time);
             execution_status += print_exec_status(current_time, running.PID, READY, RUNNING);
         } 
+
         current_time++;
         /////////////////////////////////////////////////////////////////
 

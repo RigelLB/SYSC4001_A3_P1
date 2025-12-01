@@ -323,14 +323,14 @@ void idle_CPU(PCB &running) {
     running.PID = -1;
 }
 
-// Ildes the CPU and adds the running process to the waiting queue
+// Idles the CPU and adds the running process to the waiting queue
 void suspend_process(PCB &running, std::vector<waiting_PCB> &wait_queue, std::vector<PCB> &job_queue) {
     wait_queue.push_back(waiting_PCB(running, running.io_duration));
     sync_queue(job_queue, running);
     idle_CPU(running);
 }
 
-// Ildes the CPU and puts it into the ready, sets the arrival time to be the current time
+// Idles the CPU and puts it into the ready, sets the arrival time to be the current time
 void pause_process(PCB &running, std::vector<PCB> &ready_queue, std::vector<PCB> &job_queue, int current_time) {
     running.arrival_time = current_time;
     ready_queue.push_back(running);
@@ -338,7 +338,7 @@ void pause_process(PCB &running, std::vector<PCB> &ready_queue, std::vector<PCB>
     idle_CPU(running);
 }
 
-
+// Sorting algorithm using the PID of the processes
 void EP(std::vector<PCB> &ready_queue) {
     std::sort( 
                 ready_queue.begin(),

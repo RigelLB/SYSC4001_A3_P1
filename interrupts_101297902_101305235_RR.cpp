@@ -95,17 +95,22 @@ std::tuple<std::string /* add std::string for bonus mark */ > run_simulation(std
             }
 
         }
+        // Terminate the process if there is no remaining CPU processing time
         if (running.remaining_time == 0 && running.state != NOT_ASSIGNED) {
             execution_status += print_exec_status(current_time, running.PID, RUNNING, TERMINATED);
             terminate_process(running, job_list);
             idle_CPU(running);
         }
+
+        // Pause the process if the quantum has expired
         if (running_time >= QUANTUM && running.PID != -1) {
             execution_status += print_exec_status(current_time, running.PID, RUNNING, READY);
             pause_process(running, ready_queue, job_list, current_time);
         }
         // Make sure processes are in the right order
         FCFS(ready_queue);
+
+        // Run a new process if no programs are assigned to the CPU
         if (running.state == NOT_ASSIGNED && !ready_queue.empty()) {
             running_time = 0;
             run_process(running, job_list, ready_queue, current_time);
